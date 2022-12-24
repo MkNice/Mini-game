@@ -1,0 +1,8 @@
+<div>
+  <h1>Score Computer {{scoreComputer}}</h1>
+  <h1>Score Player {{scorePlayer}}</h1>
+
+</div>
+<div class="game-container">
+  <div *ngFor="let i of date" [ngClass]="i.status" (click)='clickPlayer(i.status , i)'></div>
+</div>
