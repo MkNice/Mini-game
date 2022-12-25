@@ -16,7 +16,7 @@ export class GenerateObjectsService {
   }
 
   private shuffleNumbers(numbers: number[]) {
-    for (let currentIndex = numbers.length - 1; currentIndex > 0; currentIndex--) {
+    for (let currentIndex = 0; currentIndex < numbers.length; currentIndex++) {
       let randomIndex = Math.floor(Math.random() * (currentIndex + 1));
 
       [numbers[currentIndex], numbers[randomIndex]] = [

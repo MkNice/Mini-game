@@ -48,3 +48,9 @@
 .active-element-computer {
   background-color: #800000;
 }
+
+@media (max-width: 600px) {
+  .container {
+    margin-left: 0;
+  }
+}
