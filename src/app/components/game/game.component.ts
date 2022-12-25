@@ -14,12 +14,14 @@ import { WelcomeGameModalComponent } from 'src/app/modalDialogs/welcome-game-mod
 
 export class GameComponent implements OnInit {
   public ceilDatas: ICeilData[] = [];
-  // В целом было бы неплохо добавить ещё отдельный модуль для проекта.
-  public settingsGame: ISettingsGame = { // Если я вдруг таки надумаю или успею сделать допольнитеные фичи то настройки будут сюда прилетатью
+
+  public settingsGame: ISettingsGame = {
     countCeils: 100,
     deleyMs: 1500,
     winScore: 10,
   };
+
+  public differenceDeleyMs: number = 50;
 
   public scoreComputer: number = 0;
   public scorePlayer: number = 0;
@@ -81,7 +83,7 @@ export class GameComponent implements OnInit {
     const interval = setInterval(() => {
       const randomNumber = randomNumbers[countCompleateInterval];
       const curDate = this.ceilDatas[randomNumber - 1];
-      let timeOut: NodeJS.Timeout = setTimeout(() => { }, 0); // Подумай над этой фигнёй
+      let timeOut: NodeJS.Timeout | null = null;
 
       const [isComputerWinner, isPlayerWinner] = [
         this.checkWinner(this.scoreComputer, 'комп\'ютер', interval, timeOut),
@@ -93,20 +95,20 @@ export class GameComponent implements OnInit {
       }
 
       curDate.status = 'active-element';
+
       timeOut = setTimeout(() => {
         if (curDate.status !== 'active-element-player') {
           curDate.status = 'active-element-computer';
           this.scoreComputer++;
         }
-      }, this.settingsGame.deleyMs - 50); // Подумай еще над этим числом
-
+      }, this.settingsGame.deleyMs - this.differenceDeleyMs);
 
       countCompleateInterval++;
     }, this.settingsGame.deleyMs);
   }
 
-  private checkWinner(playerScore: number, player: string, interval: NodeJS.Timer, timeout: NodeJS.Timeout): boolean {
-    if (playerScore === this.settingsGame.winScore) {
+  private checkWinner(playerScore: number, player: string, interval: NodeJS.Timer, timeout: NodeJS.Timeout | null): boolean {
+    if (playerScore === this.settingsGame.winScore && timeout) {
       clearInterval(interval);
       clearTimeout(timeout);
       this.openResultsGameDialog(player);
