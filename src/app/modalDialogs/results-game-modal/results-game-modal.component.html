@@ -1,8 +1,13 @@
 <div>
   <h1>Победил {{ data.winner }}</h1>
   <p>Хотите попробовать ещё?</p>
-  <button [mat-dialog-close]="data" (click)="choosePlayer('No')">Нет</button
-  ><button [mat-dialog-close]="data" (click)="choosePlayer('Yes')">
+  <button type="submit" [mat-dialog-close]="data" (click)="choosePlayer('No')">
+    Нет</button
+  ><button
+    type="submit"
+    [mat-dialog-close]="data"
+    (click)="choosePlayer('Yes')"
+  >
     Ещё разок
   </button>
 </div>

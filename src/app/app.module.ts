@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { GameComponent } from './components/game/game.component';
@@ -24,6 +24,7 @@ import { CommonModule } from '@angular/common';
     MatDialogModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     CommonModule,
   ],
   providers: [],

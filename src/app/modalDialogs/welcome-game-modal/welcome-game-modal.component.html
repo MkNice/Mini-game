@@ -1,6 +1,16 @@
-<div>
+<div class="modal-welcome">
   <h1>Добро пожаловать</h1>
   <p>Введите задержку в милисекундах и да начнётся игра</p>
-  <input type="number" min="100" max="5000" [(ngModel)]="data.delay" />
-  <button (click)="startGame()" [mat-dialog-close]="data">Начать играть</button>
+  <form [formGroup]="formSettings">
+    <input
+      type="number"
+      min="100"
+      max="5000"
+      required
+      formControlName="delay"
+    />
+    <button type="submit" (click)="startGame()" [mat-dialog-close]="data" [disabled]="formSettings.invalid">
+      Начать играть
+    </button>
+  </form>
 </div>
