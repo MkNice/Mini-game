@@ -26,13 +26,13 @@ export class GameComponent implements OnInit {
 
   constructor(private dialog: MatDialog, private generateObjects: GenerateObjectsService) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.ceilDatas = this.generateObjects.generateObjects(this.settingsGame.countCeils);
 
     this.openWelcomeDialog();
   }
 
-  public openWelcomeDialog(): void {
+  private openWelcomeDialog(): void {
     this.dialog.open(WelcomeGameModalComponent, {
       data: {
         isStartGame: false,
@@ -48,7 +48,7 @@ export class GameComponent implements OnInit {
       });
   }
 
-  public openResultsGameDialog(winner: string): void {
+  private openResultsGameDialog(winner: string): void {
     this.dialog.open(ResultsGameModalComponent, {
       data: {
         winner: winner,
@@ -74,7 +74,7 @@ export class GameComponent implements OnInit {
     }
   }
 
-  public activateCell(): void {
+  private activateCell(): void {
     const randomNumbers = this.generateObjects.getRandomNumbers(this.settingsGame);
     let countCompleateInterval = 0;
 
@@ -84,8 +84,8 @@ export class GameComponent implements OnInit {
       let timeOut: NodeJS.Timeout = setTimeout(() => { }, 0); // Подумай над этой фигнёй
 
       const [isComputerWinner, isPlayerWinner] = [
-        this.checkWinner(this.scoreComputer, 'компьютер', interval, timeOut),
-        this.checkWinner(this.scorePlayer, 'игрок', interval, timeOut)
+        this.checkWinner(this.scoreComputer, 'комп\'ютер', interval, timeOut),
+        this.checkWinner(this.scorePlayer, 'гравець', interval, timeOut)
       ];
 
       if (isComputerWinner || isPlayerWinner) {
