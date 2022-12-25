@@ -1,6 +1,6 @@
 <div class="modal-welcome">
-  <h1>Победил {{ dataDialog.winner }}</h1>
-  <span class="modal-message">Хотите попробовать ещё?</span>
+  <h1>Переміг {{ dataDialog.winner }}</h1>
+  <span class="modal-message">Хочете спробувати ще?</span>
   <div class="btns">
     <button
       class="btn"
@@ -8,14 +8,14 @@
       [mat-dialog-close]="dataDialog"
       (click)="choosePlayer('No')"
     >
-      Нет</button
+      Ні</button
     ><button
       class="btn"
       type="submit"
       [mat-dialog-close]="dataDialog"
       (click)="choosePlayer('Yes')"
     >
-      Ещё разок
+      Ще раз
     </button>
   </div>
 </div>
