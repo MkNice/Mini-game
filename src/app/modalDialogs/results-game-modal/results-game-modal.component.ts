@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { GameComponent } from 'src/app/components/game/game.component';
-import { IResultsGameDialog } from 'src/app/shared/interfaces/modalDialogs.interface';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { IResultsGameDialog } from 'src/app/shared/interfaces/modal-dialogs.interface';
 
 @Component({
   selector: 'app-results-game-modal',
@@ -10,9 +9,9 @@ import { IResultsGameDialog } from 'src/app/shared/interfaces/modalDialogs.inter
 })
 export class ResultsGameModalComponent {
 
-  constructor(public dialogRef: MatDialogRef<GameComponent>, @Inject(MAT_DIALOG_DATA) public dataDialog: IResultsGameDialog,) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public dataDialog: IResultsGameDialog) { }
 
-  public choosePlayer(choose: 'Yes' | 'No'): void {
-    this.dataDialog.repeatGame = choose === 'Yes';
+  public choosePlayer(isChoose: boolean): void {
+    this.dataDialog.repeatGame = isChoose;
   }
 }

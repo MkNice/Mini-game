@@ -10,6 +10,7 @@ import { GameComponent } from './components/game/game.component';
 import { WelcomeGameModalComponent } from './modalDialogs/welcome-game-modal/welcome-game-modal.component';
 import { ResultsGameModalComponent } from './modalDialogs/results-game-modal/results-game-modal.component';
 import { CommonModule } from '@angular/common';
+import { ButtonComponent } from './components/game/button/button.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { CommonModule } from '@angular/common';
     GameComponent,
     WelcomeGameModalComponent,
     ResultsGameModalComponent,
+    ButtonComponent,
   ],
 
   imports: [

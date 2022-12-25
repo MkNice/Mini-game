@@ -3,17 +3,17 @@
   <span class="modal-message">Хочете спробувати ще?</span>
   <div class="btns">
     <button
-      class="btn"
+      app-button
       type="submit"
       [mat-dialog-close]="dataDialog"
-      (click)="choosePlayer('No')"
+      (click)="choosePlayer(false)"
     >
       Ні</button
     ><button
-      class="btn"
+      app-button
       type="submit"
       [mat-dialog-close]="dataDialog"
-      (click)="choosePlayer('Yes')"
+      (click)="choosePlayer(true)"
     >
       Ще раз
     </button>

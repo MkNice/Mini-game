@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import { ICeilData, ISettingsGame } from '../interfaces/game.interface';
+import { ICellData, ISettingsGame } from '../interfaces/game.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class GenerateObjectsService {
+export class CoreGameService {
 
   constructor() { }
 
-  public getRandomNumbers(settings: ISettingsGame) {
-    const numbers = this.getNumbers(settings.countCeils);
+  public getShuffledNumbers(settings: ISettingsGame): number[] {
+    const numbers = this.getNumbers(settings.countCells);
 
     return this.shuffleNumbers(numbers);
   }
 
-  private shuffleNumbers(numbers: number[]) {
+  private shuffleNumbers(numbers: number[]): number[] {
     for (let currentIndex = 0; currentIndex < numbers.length; currentIndex++) {
       let randomIndex = Math.floor(Math.random() * (currentIndex + 1));
 
@@ -23,12 +23,12 @@ export class GenerateObjectsService {
         numbers[randomIndex],
         numbers[currentIndex],
       ];
-    };
+    }
 
     return numbers;
   }
 
-  private getNumbers(amountNumbers: number) {
+  private getNumbers(amountNumbers: number): number[] {
     const numbers = [];
 
     for (let number = 1; number <= amountNumbers; number++) {
@@ -38,13 +38,13 @@ export class GenerateObjectsService {
     return numbers;
   }
 
-  public generateObjects(countCeils: number): ICeilData[] {
-    const dataCeil = [];
+  public generateObjects(countCeils: number): ICellData[] {
+    const dataCell = [];
 
-    for (let ceil = 1; ceil <= countCeils; ceil++) {
-      dataCeil.push({ id: ceil, status: 'default' });
+    for (let cell = 1; cell <= countCeils; cell++) {
+      dataCell.push({ id: cell, status: 'default' });
     }
 
-    return dataCeil;
+    return dataCell;
   }
 }

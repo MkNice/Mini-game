@@ -13,7 +13,7 @@
   margin: 0 auto;
   padding-bottom: 25px;
   background-color: #000;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(10, 1fr);
   box-shadow: 0 0 20px 5px #f00;
   border-radius: 25px;
   gap: 5px;

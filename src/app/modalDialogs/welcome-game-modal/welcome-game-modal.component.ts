@@ -1,14 +1,14 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { GameComponent } from 'src/app/components/game/game.component';
-import { IWelcomeGameDialog } from 'src/app/shared/interfaces/modalDialogs.interface';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { IWelcomeGameDialog } from 'src/app/shared/interfaces/modal-dialogs.interface';
 
 @Component({
   selector: 'app-welcome-game-modal',
   templateUrl: './welcome-game-modal.component.html',
   styleUrls: ['./welcome-game-modal.component.css']
 })
+
 export class WelcomeGameModalComponent {
 
   public formSettings: FormGroup = new FormGroup({
@@ -19,7 +19,7 @@ export class WelcomeGameModalComponent {
     ])
   });
 
-  constructor(public dialogRef: MatDialogRef<GameComponent>, @Inject(MAT_DIALOG_DATA) public dataDialog: IWelcomeGameDialog) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public dataDialog: IWelcomeGameDialog) { }
 
   public startGame(): void {
     this.dataDialog.isStartGame = true;

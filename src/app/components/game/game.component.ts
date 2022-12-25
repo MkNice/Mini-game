@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { IResultsGameDialog, IWelcomeGameDialog } from '../../shared/interfaces/modalDialogs.interface';
-import { GenerateObjectsService } from '../../shared/services/generate-objects.service';
-import { ICeilData, ISettingsGame } from 'src/app/shared/interfaces/game.interface';
+import { IResultsGameDialog, IWelcomeGameDialog } from '../../shared/interfaces/modal-dialogs.interface';
+import { CoreGameService } from '../../shared/services/core-game.service';
+import { ICellData, ICellStatuses, ISettingsGame } from 'src/app/shared/interfaces/game.interface';
 import { ResultsGameModalComponent } from 'src/app/modalDialogs/results-game-modal/results-game-modal.component';
 import { WelcomeGameModalComponent } from 'src/app/modalDialogs/welcome-game-modal/welcome-game-modal.component';
+import { delay, interval, map, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-game',
@@ -13,39 +14,52 @@ import { WelcomeGameModalComponent } from 'src/app/modalDialogs/welcome-game-mod
 })
 
 export class GameComponent implements OnInit {
-  public ceilDatas: ICeilData[] = [];
+  public gameIsEnding = new Subject<void>();
 
-  public settingsGame: ISettingsGame = {
-    countCeils: 100,
-    deleyMs: 1500,
-    winScore: 10,
+  @ViewChild('board')
+
+  public board!: ElementRef<HTMLElement>;
+
+  public cellData: ICellData[] = [];
+
+  public cellStatuses: ICellStatuses = {
+    default: 'default',
+    availableCell: 'active-element',
+    playerCell: 'active-element-player',
+    computerCell: 'active-element-computer',
   };
 
-  public differenceDeleyMs: number = 50;
+  public settingsGame: ISettingsGame = {
+    countCells: 100,
+    delayMs: 1500,
+    winScore: 10,
+  };
 
   public scoreComputer: number = 0;
   public scorePlayer: number = 0;
 
-  constructor(private dialog: MatDialog, private generateObjects: GenerateObjectsService) { }
+  constructor(private dialog: MatDialog, private generateObjects: CoreGameService) { }
 
   public ngOnInit(): void {
-    this.ceilDatas = this.generateObjects.generateObjects(this.settingsGame.countCeils);
+    this.cellData = this.generateObjects.generateObjects(this.settingsGame.countCells);
 
     this.openWelcomeDialog();
   }
+
 
   private openWelcomeDialog(): void {
     this.dialog.open(WelcomeGameModalComponent, {
       data: {
         isStartGame: false,
-        delay: this.settingsGame.deleyMs,
+        delay: this.settingsGame.delayMs,
       }
     })
       .afterClosed()
       .subscribe((response: IWelcomeGameDialog) => {
         if (response.isStartGame) {
-          this.settingsGame.deleyMs = response.delay;
-          this.activateCell();
+          this.settingsGame.delayMs = response.delay;
+
+          this.getObservableScore().subscribe();
         }
       });
   }
@@ -60,60 +74,74 @@ export class GameComponent implements OnInit {
       .afterClosed()
       .subscribe((response: IResultsGameDialog) => {
         if (response.repeatGame) {
-          this.ceilDatas = this.generateObjects.generateObjects(this.settingsGame.countCeils);
-          this.scoreComputer = 0;
-          this.scorePlayer = 0;
+          this.resetStateGame();
 
-          this.activateCell();
+          this.getObservableScore().subscribe();
         }
       });
   }
 
-  public clickPlayer(clickedElement: ICeilData): void {
-    if (clickedElement.status === 'active-element') {
-      this.ceilDatas[clickedElement.id - 1].status = 'active-element-player';
+  private resetStateGame(): void {
+    this.cellData = this.generateObjects.generateObjects(this.settingsGame.countCells);
+
+    this.scoreComputer = 0;
+    this.scorePlayer = 0;
+  }
+
+  public clickPlayer(clickedElement: ICellData): void {
+    if (clickedElement.status === this.cellStatuses.availableCell) {
+      const cellData = this.cellData.at(clickedElement.id - 1);
+
+      if (cellData) {
+        cellData.status = this.cellStatuses.availableCell;
+      }
+
       this.scorePlayer++;
     }
   }
 
-  private activateCell(): void {
-    const randomNumbers = this.generateObjects.getRandomNumbers(this.settingsGame);
-    let countCompleateInterval = 0;
-
-    const interval = setInterval(() => {
-      const randomNumber = randomNumbers[countCompleateInterval];
-      const currentCeil = this.ceilDatas[randomNumber - 1];
-      let timeOut: NodeJS.Timeout = setTimeout(()=>{},0)
-
-      const [isComputerWinner, isPlayerWinner] = [
-        this.checkWinner(this.scoreComputer, 'комп\'ютер', interval, timeOut),
-        this.checkWinner(this.scorePlayer, 'гравець', interval, timeOut)
-      ];
-
-      if (isComputerWinner || isPlayerWinner) {
-        return;
-      }
-
-      currentCeil.status = 'active-element';
-
-      timeOut = setTimeout(() => {
-        if (currentCeil.status !== 'active-element-player') {
-          currentCeil.status = 'active-element-computer';
-          this.scoreComputer++;
-        }
-      }, this.settingsGame.deleyMs - this.differenceDeleyMs);
-
-      countCompleateInterval++;
-    }, this.settingsGame.deleyMs);
-  }
-
-  private checkWinner(playerScore: number, player: string, interval: NodeJS.Timer, timeout: NodeJS.Timeout): boolean {
+  private checkWinner(playerScore: number, player: string): boolean {
     if (playerScore === this.settingsGame.winScore) {
-        clearInterval(interval);
-        clearTimeout(timeout);
-        this.openResultsGameDialog(player);
-        return true;
+      this.openResultsGameDialog(player);
+      return true;
     }
     return false;
+  }
+
+  private getObservableScore() {
+    const randomNumbers = this.generateObjects.getShuffledNumbers(this.settingsGame);
+
+    return interval(this.settingsGame.delayMs)
+      .pipe(
+        takeUntil(this.gameIsEnding),
+        map((tick) => {
+          const [isComputerWinner, isPlayerWinner] = [
+            this.checkWinner(this.scoreComputer, 'комп\'ютер'),
+            this.checkWinner(this.scorePlayer, 'гравець')
+          ];
+
+          if (isComputerWinner || isPlayerWinner) {
+            this.gameIsEnding.next();
+
+            return;
+          }
+
+          const cellNeededHighlight = this.cellData[randomNumbers[tick] - 1];
+          cellNeededHighlight.status = this.cellStatuses.availableCell;
+
+          return cellNeededHighlight;
+        }),
+        delay(this.settingsGame.delayMs),
+        tap((cell) => {
+          cell && this.checkManagedPlayer(cell);
+        }),
+      );
+  }
+
+  private checkManagedPlayer(cell: ICellData): void {
+    if (cell?.status !== 'active-element-player') {
+      cell.status = 'active-element-computer';
+      this.scoreComputer += 1;
+    }
   }
 }

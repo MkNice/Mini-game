@@ -4,7 +4,7 @@
       <h1>Бали: комп'ютер {{scoreComputer}} / гравець {{scorePlayer}}</h1>
     </div>
   </div>
-  <div class="game-elements">
-    <div *ngFor="let element of ceilDatas" [ngClass]="element.status" (click)='clickPlayer(element)'></div>
+  <div class="game-elements" #board>
+    <div *ngFor="let element of cellData" [ngClass]="element.status" (click)='clickPlayer(element)'></div>
   </div>
 </div>

@@ -1,10 +1,17 @@
-export interface ICeilData {
-    id: number,
-    status: string,
-  }
+export interface ICellData {
+  id: number,
+  status: string,
+}
+
+export interface ICellStatuses {
+  default: string,
+  availableCell: string,
+  playerCell: string,
+  computerCell: string,
+}
 
 export interface ISettingsGame {
-  countCeils: number,
-  deleyMs: number,
+  countCells: number,
+  delayMs: number,
   winScore: number,
 }
