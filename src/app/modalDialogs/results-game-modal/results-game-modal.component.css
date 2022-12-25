@@ -1,0 +1,12 @@
+.modal-welcome {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-message {
+  font-size: 16px;
+}
+
+.btns {
+  margin: 15px 0 0 0;
+}

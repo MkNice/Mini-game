@@ -10,9 +10,9 @@ import { IResultsGameDialog } from 'src/app/shared/interfaces/modalDialogs.inter
 })
 export class ResultsGameModalComponent {
 
-  constructor(public dialogRef: MatDialogRef<GameComponent>, @Inject(MAT_DIALOG_DATA) public data: IResultsGameDialog,) { }
+  constructor(public dialogRef: MatDialogRef<GameComponent>, @Inject(MAT_DIALOG_DATA) public dataDialog: IResultsGameDialog,) { }
 
   public choosePlayer(choose: 'Yes' | 'No'): void {
-    this.data.repeatGame = choose === 'Yes';
+    this.dataDialog.repeatGame = choose === 'Yes';
   }
 }

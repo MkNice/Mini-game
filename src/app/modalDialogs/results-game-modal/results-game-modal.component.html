@@ -1,13 +1,21 @@
-<div>
-  <h1>Победил {{ data.winner }}</h1>
-  <p>Хотите попробовать ещё?</p>
-  <button type="submit" [mat-dialog-close]="data" (click)="choosePlayer('No')">
-    Нет</button
-  ><button
-    type="submit"
-    [mat-dialog-close]="data"
-    (click)="choosePlayer('Yes')"
-  >
-    Ещё разок
-  </button>
+<div class="modal-welcome">
+  <h1>Победил {{ dataDialog.winner }}</h1>
+  <span class="modal-message">Хотите попробовать ещё?</span>
+  <div class="btns">
+    <button
+      class="btn"
+      type="submit"
+      [mat-dialog-close]="dataDialog"
+      (click)="choosePlayer('No')"
+    >
+      Нет</button
+    ><button
+      class="btn"
+      type="submit"
+      [mat-dialog-close]="dataDialog"
+      (click)="choosePlayer('Yes')"
+    >
+      Ещё разок
+    </button>
+  </div>
 </div>

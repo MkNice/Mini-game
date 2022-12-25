@@ -12,16 +12,17 @@ import { IWelcomeGameDialog } from 'src/app/shared/interfaces/modalDialogs.inter
 export class WelcomeGameModalComponent {
 
   public formSettings: FormGroup = new FormGroup({
-    delay: new FormControl(this.data.delay, [
+    delay: new FormControl(this.dataDialog.delay, [
       Validators.min(150),
       Validators.max(5000),
       Validators.required
     ])
   });
 
-  constructor(public dialogRef: MatDialogRef<GameComponent>, @Inject(MAT_DIALOG_DATA) public data: IWelcomeGameDialog) { }
+  constructor(public dialogRef: MatDialogRef<GameComponent>, @Inject(MAT_DIALOG_DATA) public dataDialog: IWelcomeGameDialog) { }
 
   public startGame(): void {
-    this.data.isStartGame = true;
+    this.dataDialog.isStartGame = true;
+    this.dataDialog.delay = this.formSettings.value.delay;
   }
 }
