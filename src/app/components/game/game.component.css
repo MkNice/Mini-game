@@ -1,4 +1,7 @@
-.game-container{
+.game-container {
+  height: 91.5%;
+  min-width: 600px;
+  padding: 30px 50px 50px 50px;
   color: #fff;
   background-color: #000;
   box-shadow: inset 0 0 25px 5px rgba(255, 255, 255, 0.9);
@@ -6,7 +9,7 @@
 
 .game-elements {
   display: grid;
-  max-width: 550px;
+  max-width: 800px;
   margin: 0 auto;
   padding-bottom: 25px;
   background-color: #000;
@@ -17,11 +20,11 @@
   padding: 15px;
 }
 
-.title-score{
+.title-score {
   text-align: center;
 }
 
-.title-score > h1 {
+.title-score>h1 {
   margin: 0 0 10px 0;
 }
 
@@ -29,8 +32,8 @@
 .active-element,
 .active-element-player,
 .active-element-computer {
-  width: 50px;
-  height: 50px;
+  width: 75px;
+  height: 75px;
 }
 
 .default {
@@ -49,8 +52,39 @@
   background-color: #800000;
 }
 
-@media (max-width: 600px) {
-  .container {
-    margin-left: 0;
+@media (max-width: 940px) {
+  .game-container {
+    padding: 20px 30px 30px 30px;
+  }
+
+  .game-elements {
+    max-width: 550px;
+  }
+
+  .default,
+  .active-element,
+  .active-element-player,
+  .active-element-computer {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-height: 820px) {
+  .game-container {
+    height: 95%;
+    padding: 20px 30px 30px 30px;
+  }
+
+  .game-elements {
+    max-width: 550px;
+  }
+
+  .default,
+  .active-element,
+  .active-element-player,
+  .active-element-computer {
+    width: 50px;
+    height: 50px;
   }
 }
