@@ -82,8 +82,8 @@ export class GameComponent implements OnInit {
 
     const interval = setInterval(() => {
       const randomNumber = randomNumbers[countCompleateInterval];
-      const curDate = this.ceilDatas[randomNumber - 1];
-      let timeOut: NodeJS.Timeout | null = null;
+      const currentCeil = this.ceilDatas[randomNumber - 1];
+      let timeOut: NodeJS.Timeout = setTimeout(()=>{},0)
 
       const [isComputerWinner, isPlayerWinner] = [
         this.checkWinner(this.scoreComputer, 'комп\'ютер', interval, timeOut),
@@ -94,11 +94,11 @@ export class GameComponent implements OnInit {
         return;
       }
 
-      curDate.status = 'active-element';
+      currentCeil.status = 'active-element';
 
       timeOut = setTimeout(() => {
-        if (curDate.status !== 'active-element-player') {
-          curDate.status = 'active-element-computer';
+        if (currentCeil.status !== 'active-element-player') {
+          currentCeil.status = 'active-element-computer';
           this.scoreComputer++;
         }
       }, this.settingsGame.deleyMs - this.differenceDeleyMs);
@@ -107,12 +107,12 @@ export class GameComponent implements OnInit {
     }, this.settingsGame.deleyMs);
   }
 
-  private checkWinner(playerScore: number, player: string, interval: NodeJS.Timer, timeout: NodeJS.Timeout | null): boolean {
-    if (playerScore === this.settingsGame.winScore && timeout) {
-      clearInterval(interval);
-      clearTimeout(timeout);
-      this.openResultsGameDialog(player);
-      return true;
+  private checkWinner(playerScore: number, player: string, interval: NodeJS.Timer, timeout: NodeJS.Timeout): boolean {
+    if (playerScore === this.settingsGame.winScore) {
+        clearInterval(interval);
+        clearTimeout(timeout);
+        this.openResultsGameDialog(player);
+        return true;
     }
     return false;
   }
