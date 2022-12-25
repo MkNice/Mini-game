@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { throttleTime } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { WelcomeGameModalComponent } from '../welcome-game-modal/welcome-game-modal.component';
 
 interface IDate {
   id: number,
@@ -24,11 +25,15 @@ export class GameComponent implements OnInit {
   public scoreComputer: number = 0;
   public scorePlayer: number = 0;
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.genereteObject();
     this.activateCell();
+  }
+
+  public OpenModal(): void {
+    this.dialog.open(WelcomeGameModalComponent,{})
   }
 
   private genereteObject(): void {
