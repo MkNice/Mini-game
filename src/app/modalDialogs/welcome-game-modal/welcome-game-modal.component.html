@@ -1,0 +1,6 @@
+<div>
+  <h1>Добро пожаловать</h1>
+  <p>Введите задержку в милисекундах и да начнётся игра</p>
+  <input type="number" min="100" max="5000" [(ngModel)]="data.delay" />
+  <button (click)="startGame()" [mat-dialog-close]="data">Начать играть</button>
+</div>
