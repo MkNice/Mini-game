@@ -139,8 +139,8 @@ export class GameComponent implements OnInit {
   }
 
   private checkManagedPlayer(cell: ICellData): void {
-    if (cell?.status !== 'active-element-player') {
-      cell.status = 'active-element-computer';
+    if (cell?.status !== this.cellStatuses.playerCell) {
+      cell.status = this.cellStatuses.computerCell;
       this.scoreComputer += 1;
     }
   }
