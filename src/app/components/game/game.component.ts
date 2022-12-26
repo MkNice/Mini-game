@@ -93,7 +93,7 @@ export class GameComponent implements OnInit {
       const cellData = this.cellData.at(clickedElement.id - 1);
 
       if (cellData) {
-        cellData.status = this.cellStatuses.availableCell;
+        cellData.status = this.cellStatuses.playerCell;
       }
 
       this.scorePlayer++;
