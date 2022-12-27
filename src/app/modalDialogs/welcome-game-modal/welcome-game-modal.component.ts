@@ -1,7 +1,5 @@
-import { Component, Inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { IWelcomeGameDialog } from 'src/app/shared/interfaces/modal-dialogs.interface';
 
 @Component({
   selector: 'app-welcome-game-modal',
@@ -9,20 +7,23 @@ import { IWelcomeGameDialog } from 'src/app/shared/interfaces/modal-dialogs.inte
   styleUrls: ['./welcome-game-modal.component.css']
 })
 
-export class WelcomeGameModalComponent {
+export class WelcomeGameModalComponent implements OnInit {
+  @Output() delayUser: EventEmitter<number> = new EventEmitter();
 
   public formSettings: FormGroup = new FormGroup({
-    delay: new FormControl(this.dataDialog.delay, [
+    delay: new FormControl('', [
       Validators.min(150),
       Validators.max(5000),
       Validators.required
     ])
-  });
+  });;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public dataDialog: IWelcomeGameDialog) { }
+  constructor() { }
+
+  ngOnInit() { }
 
   public startGame(): void {
-    this.dataDialog.isStartGame = true;
-    this.dataDialog.delay = this.formSettings.value.delay;
+    this.delayUser.emit(this.formSettings.value.delay);
   }
+
 }

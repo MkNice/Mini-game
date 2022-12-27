@@ -1,11 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { IResultsGameDialog, IWelcomeGameDialog } from '../../shared/interfaces/modal-dialogs.interface';
+import { IResultsGameDialog } from '../../shared/interfaces/modal-dialogs.interface';
 import { CoreGameService } from '../../shared/services/core-game.service';
 import { ICellData, ICellStatuses, ISettingsGame } from 'src/app/shared/interfaces/game.interface';
 import { ResultsGameModalComponent } from 'src/app/modalDialogs/results-game-modal/results-game-modal.component';
-import { WelcomeGameModalComponent } from 'src/app/modalDialogs/welcome-game-modal/welcome-game-modal.component';
 import { delay, interval, map, Subject, takeUntil, tap } from 'rxjs';
+import { WelcomeGameModalComponent } from 'src/app/modalDialogs/welcome-game-modal/welcome-game-modal.component';
 
 @Component({
   selector: 'app-game',
@@ -15,10 +15,7 @@ import { delay, interval, map, Subject, takeUntil, tap } from 'rxjs';
 
 export class GameComponent implements OnInit {
   public gameIsEnding = new Subject<void>();
-
-  @ViewChild('board')
-
-  public board!: ElementRef<HTMLElement>;
+  @ViewChild(WelcomeGameModalComponent) WelcomeGameModalComponent!: WelcomeGameModalComponent;
 
   public cellData: ICellData[] = [];
 
@@ -31,37 +28,32 @@ export class GameComponent implements OnInit {
 
   public settingsGame: ISettingsGame = {
     countCells: 100,
-    delayMs: 1500,
+    delayForPainting: 1500,
+    delayForPlayer: 1450,
+    delayBetweenPaintingAndPlayer: 50,
     winScore: 10,
   };
 
   public scoreComputer: number = 0;
   public scorePlayer: number = 0;
 
-  constructor(private dialog: MatDialog, private generateObjects: CoreGameService) { }
+  constructor(private dialog: MatDialog, private coreGame: CoreGameService) { }
 
   public ngOnInit(): void {
-    this.cellData = this.generateObjects.generateObjects(this.settingsGame.countCells);
-
-    this.openWelcomeDialog();
+    this.cellData = this.coreGame.generateObjects(this.settingsGame.countCells);
   }
 
+  public startGame(delay: number): void {
+    if (this.gameIsEnding.observers.length) {
+      return;
+    } else {
+      this.resetStateGame();
+    }
 
-  private openWelcomeDialog(): void {
-    this.dialog.open(WelcomeGameModalComponent, {
-      data: {
-        isStartGame: false,
-        delay: this.settingsGame.delayMs,
-      }
-    })
-      .afterClosed()
-      .subscribe((response: IWelcomeGameDialog) => {
-        if (response.isStartGame) {
-          this.settingsGame.delayMs = response.delay;
+    this.settingsGame.delayForPainting = delay;
+    this.settingsGame.delayForPlayer = this.settingsGame.delayForPainting - this.settingsGame.delayBetweenPaintingAndPlayer;
 
-          this.getObservableScore().subscribe();
-        }
-      });
+    this.getObservableScore().subscribe();
   }
 
   private openResultsGameDialog(winner: string): void {
@@ -73,7 +65,7 @@ export class GameComponent implements OnInit {
     })
       .afterClosed()
       .subscribe((response: IResultsGameDialog) => {
-        if (response.repeatGame) {
+        if (response && response.repeatGame) {
           this.resetStateGame();
 
           this.getObservableScore().subscribe();
@@ -82,7 +74,7 @@ export class GameComponent implements OnInit {
   }
 
   private resetStateGame(): void {
-    this.cellData = this.generateObjects.generateObjects(this.settingsGame.countCells);
+    this.cellData = this.coreGame.generateObjects(this.settingsGame.countCells);
 
     this.scoreComputer = 0;
     this.scorePlayer = 0;
@@ -100,29 +92,30 @@ export class GameComponent implements OnInit {
     }
   }
 
-  private checkWinner(playerScore: number, player: string): boolean {
-    if (playerScore === this.settingsGame.winScore) {
+  private checkWinner(): boolean {
+    let player = '';
+
+    if (this.scoreComputer === this.settingsGame.winScore) {
+      player = 'комп\'ютер';
       this.openResultsGameDialog(player);
-      return true;
     }
-    return false;
+
+    if (this.scorePlayer === this.settingsGame.winScore) {
+      player = 'гравець';
+      this.openResultsGameDialog(player);
+    }
+
+    return !!player;
   }
 
   private getObservableScore() {
-    const randomNumbers = this.generateObjects.getShuffledNumbers(this.settingsGame);
+    const randomNumbers = this.coreGame.getShuffledNumbers(this.settingsGame);
 
-    return interval(this.settingsGame.delayMs)
+    return interval(this.settingsGame.delayForPainting)
       .pipe(
-        takeUntil(this.gameIsEnding),
         map((tick) => {
-          const [isComputerWinner, isPlayerWinner] = [
-            this.checkWinner(this.scoreComputer, 'комп\'ютер'),
-            this.checkWinner(this.scorePlayer, 'гравець')
-          ];
-
-          if (isComputerWinner || isPlayerWinner) {
+          if (this.checkWinner()) {
             this.gameIsEnding.next();
-
             return;
           }
 
@@ -131,17 +124,18 @@ export class GameComponent implements OnInit {
 
           return cellNeededHighlight;
         }),
-        delay(this.settingsGame.delayMs),
+        delay(this.settingsGame.delayForPlayer),
         tap((cell) => {
           cell && this.checkManagedPlayer(cell);
         }),
+        takeUntil(this.gameIsEnding),
       );
   }
 
   private checkManagedPlayer(cell: ICellData): void {
     if (cell?.status !== this.cellStatuses.playerCell) {
       cell.status = this.cellStatuses.computerCell;
-      this.scoreComputer += 1;
+      this.scoreComputer++;
     }
   }
 }

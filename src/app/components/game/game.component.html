@@ -1,10 +1,19 @@
-<div class="game-container">
-  <div>
+<div class="game">
+  <div class="game-container">
     <div class="title-score">
-      <h1>Бали: комп'ютер {{scoreComputer}} / гравець {{scorePlayer}}</h1>
+      <h1>Бали: комп'ютер {{ scoreComputer }} / гравець {{ scorePlayer }}</h1>
     </div>
-  </div>
-  <div class="game-elements" #board>
-    <div *ngFor="let element of cellData" [ngClass]="element.status" (click)='clickPlayer(element)'></div>
+    <div class="game-elements">
+      <div
+        *ngFor="let element of cellData"
+        [ngClass]="element.status"
+        (click)="clickPlayer(element)"
+      ></div>
+    </div>
+    <div class="settings-game">
+      <app-welcome-game-modal
+        (delayUser)="startGame($event)"
+      ></app-welcome-game-modal>
+    </div>
   </div>
 </div>

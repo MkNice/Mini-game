@@ -3,6 +3,12 @@
   flex-direction: column;
 }
 
+.settings-game{
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+}
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   display: none;
@@ -18,7 +24,7 @@ input[type="number"] {
   line-height: 40px;
   text-indent: 10px;
   display: inline-block;
-  width: 100%;
+  width: 160px;
   box-sizing: border-box;
   border: 1px solid #ddd;
   font-size: 14px;

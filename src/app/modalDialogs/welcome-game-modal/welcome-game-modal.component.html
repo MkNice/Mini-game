@@ -1,18 +1,16 @@
 <div class="modal-welcome">
-  <h1>Ласкаво просимо</h1>
-  <p>Введіть затримку в мілісекундах</p>
-  <form [formGroup]="formSettings" (ngSubmit)="startGame()">
+  <form [formGroup]="formSettings" (ngSubmit)="startGame()" class="settings-game">
     <input
       type="number"
-      min="100"
+      min="150"
       max="5000"
       required
       formControlName="delay"
+      placeholder="Введіть затримку в мс"
     />
     <button
       app-button
       type="submit"
-      [mat-dialog-close]="dataDialog"
       [disabled]="formSettings.invalid"
     >
       Почати

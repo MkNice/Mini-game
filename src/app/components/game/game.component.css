@@ -1,17 +1,19 @@
-.game-container {
-  height: 91.5%;
-  min-width: 600px;
-  padding: 30px 50px 50px 50px;
+.game {
+  height: 100%;
   color: #fff;
   background-color: #000;
-  box-shadow: inset 0 0 25px 5px rgba(255, 255, 255, 0.9);
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .game-elements {
   display: grid;
-  max-width: 800px;
-  margin: 0 auto;
-  padding-bottom: 25px;
+  margin-bottom: 25px;
   background-color: #000;
   grid-template-columns: repeat(10, 1fr);
   box-shadow: 0 0 20px 5px #f00;
@@ -52,9 +54,28 @@
   background-color: #800000;
 }
 
-@media (max-width: 940px) {
+@media (max-height: 820px) {
   .game-container {
-    padding: 20px 30px 30px 30px;
+    padding: 25px 35px 35px 35px;
+  }
+
+  .game-elements {
+    max-width: 650px;
+  }
+
+  .default,
+  .active-element,
+  .active-element-player,
+  .active-element-computer {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 800px) {
+  .game-container {
+    padding: 80px 30px 30px 30px;
+    max-height: 650px;
   }
 
   .game-elements {
@@ -70,21 +91,45 @@
   }
 }
 
-@media (max-height: 820px) {
+@media (max-width: 600px) {
   .game-container {
-    height: 95%;
-    padding: 20px 30px 30px 30px;
+    padding: 80px 15px 15px 15px;
+    height: 650px;
+  }
+
+  .title-score>h1 {
+    font-size: 18px;
   }
 
   .game-elements {
-    max-width: 550px;
+    max-width: 450px;
   }
 
   .default,
   .active-element,
   .active-element-player,
   .active-element-computer {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 500px) {
+  .game-container {
+    padding: 5px 10px 10px 10px;
+    height: 650px;
+
+  }
+
+  .game-elements {
+    max-width: 350px;
+  }
+
+  .default,
+  .active-element,
+  .active-element-player,
+  .active-element-computer {
+    width: 25px;
+    height: 25px;
   }
 }

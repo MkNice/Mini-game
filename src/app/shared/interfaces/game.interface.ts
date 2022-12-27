@@ -12,6 +12,8 @@ export interface ICellStatuses {
 
 export interface ISettingsGame {
   countCells: number,
-  delayMs: number,
+  delayForPainting: number,
+  delayForPlayer: number,
+  delayBetweenPaintingAndPlayer: number,
   winScore: number,
 }
