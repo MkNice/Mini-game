@@ -7,6 +7,7 @@ import { IResultsGameDialog } from 'src/app/shared/interfaces/modal-dialogs.inte
   templateUrl: './results-game-modal.component.html',
   styleUrls: ['./results-game-modal.component.css']
 })
+
 export class ResultsGameModalComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public dataDialog: IResultsGameDialog) { }

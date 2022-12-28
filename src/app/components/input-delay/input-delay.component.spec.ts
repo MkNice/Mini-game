@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { InputDelayComponent } from './input-delay.component';
 
@@ -8,7 +9,8 @@ describe('InputDelayComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [InputDelayComponent]
+      declarations: [InputDelayComponent],
+      imports: [ReactiveFormsModule]
     })
       .compileComponents();
 
@@ -22,32 +24,33 @@ describe('InputDelayComponent', () => {
   });
 
   it('should create form with 1 control', () => {
-    expect(component.formSettings.contains('delay')).toBeTruthy()
+    expect(component.formSettings.contains('delay')).toBeTruthy();
   });
 
-  it('should mark delay as invalid if empty value'), () => {
+
+  it('should mark delay as invalid if empty value', () => {
     const control = component.formSettings.get('delay');
 
     control?.setValue('');
 
-    expect(control?.valid).toBeFalsy;
-  }
+    expect(control?.valid).toBeFalsy();
+  });
 
-  it('should mark delay as invalid if value < 150'), () => {
+  it('should mark delay as invalid if value < 150', () => {
     const control = component.formSettings.get('delay');
 
     control?.setValue(149);
 
-    expect(control?.valid).toBeFalsy;
-  }
+    expect(control?.valid).toBeFalsy();
+  });
 
-  it('should mark delay as invalid if value > 5000'), () => {
+  it('should mark delay as invalid if value > 5000', () => {
     const control = component.formSettings.get('delay');
 
     control?.setValue(5001);
 
-    expect(control?.valid).toBeFalsy;
-  }
+    expect(control?.valid).toBeFalsy();
+  });
 
   it('should contain empty string', () => {
     expect(component.formSettings.value.delay).toBe('');

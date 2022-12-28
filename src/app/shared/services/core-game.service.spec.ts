@@ -49,10 +49,22 @@ describe('GenerateObjectsService', () => {
   it('should be shuffled array.', () => {
     const numbers = service.getNumbers(amountNumbers);
 
-    const shuffledNumbers = service.shuffleNumbers(numbers)
+    const shuffledNumbers = service.shuffleNumbers(numbers);
 
-    const isShufflered =  shuffledNumbers.some((el, idx, arr) => el + 1 !== arr[idx + 1]);
+    const isShufflered = shuffledNumbers.some((el, idx, arr) => el + 1 !== arr[idx + 1]);
 
-    expect(isShufflered).toBeTruthy()
-  })
+    expect(isShufflered).toBeTruthy();
+  });
+
+  it('should be generated numbers and shuffled', () => {
+    const numbers = service.getNumbers(amountNumbers);
+
+    const shuffledNumbers = service.shuffleNumbers(numbers);
+
+    const isShufflered = shuffledNumbers.some((el, idx, arr) => el + 1 !== arr[idx + 1]);
+
+    expect(numbers.length).toBe(amountNumbers);
+    expect(isShufflered).toBeTruthy();
+
+  });
 });
