@@ -1,0 +1,16 @@
+<div class="modal-welcome">
+  <form
+    [formGroup]="formSettings"
+    (ngSubmit)="startGame()"
+    class="settings-game"
+  >
+    <input
+      type="number"
+      formControlName="delay"
+      placeholder="Введіть затримку в мс"
+    />
+    <button app-button type="submit" [disabled]="formSettings.invalid">
+      Почати
+    </button>
+  </form>
+</div>

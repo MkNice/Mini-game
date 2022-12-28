@@ -1,0 +1,21 @@
+<div class="modal-welcome">
+  <h1>Переміг {{ dataDialog.winner }}</h1>
+  <span class="modal-message">Хочете спробувати ще?</span>
+  <div class="btns">
+    <button
+      app-button
+      type="submit"
+      [mat-dialog-close]="dataDialog"
+      (click)="choosePlayer(false)"
+    >
+      Ні</button
+    ><button
+      app-button
+      type="submit"
+      [mat-dialog-close]="dataDialog"
+      (click)="choosePlayer(true)"
+    >
+      Ще раз
+    </button>
+  </div>
+</div>

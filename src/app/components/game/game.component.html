@@ -1,0 +1,19 @@
+<div class="game">
+  <div class="game-container">
+    <div class="title-score">
+      <h1>Бали: комп'ютер {{ scoreComputer }} / гравець {{ scorePlayer }}</h1>
+    </div>
+    <div class="game-elements">
+      <div
+        *ngFor="let element of cellData"
+        [ngClass]="element.status"
+        (click)="clickPlayer(element)"
+      ></div>
+    </div>
+    <div class="settings-game">
+      <app-input-delay
+        (delayUser)="startGame($event)"
+      ></app-input-delay>
+    </div>
+  </div>
+</div>
