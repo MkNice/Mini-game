@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { GameComponent } from './components/game/game.component';
-import { WelcomeGameModalComponent } from './modalDialogs/welcome-game-modal/welcome-game-modal.component';
+import { InputDelayComponent } from './components/input-delay/input-delay.component';
 import { ResultsGameModalComponent } from './modalDialogs/results-game-modal/results-game-modal.component';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from './components/game/button/button.component';
@@ -16,7 +16,7 @@ import { ButtonComponent } from './components/game/button/button.component';
   declarations: [
     AppComponent,
     GameComponent,
-    WelcomeGameModalComponent,
+    InputDelayComponent,
     ResultsGameModalComponent,
     ButtonComponent,
   ],

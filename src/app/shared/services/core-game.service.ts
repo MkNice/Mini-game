@@ -6,18 +6,15 @@ import { ICellData, ISettingsGame } from '../interfaces/game.interface';
 })
 
 export class CoreGameService {
-
-  constructor() { }
-
   public getShuffledNumbers(settings: ISettingsGame): number[] {
     const numbers = this.getNumbers(settings.countCells);
 
     return this.shuffleNumbers(numbers);
   }
 
-  private shuffleNumbers(numbers: number[]): number[] {
+  public shuffleNumbers(numbers: number[]): number[] {
     for (let currentIndex = 0; currentIndex < numbers.length; currentIndex++) {
-      let randomIndex = Math.floor(Math.random() * (currentIndex + 1));
+      const randomIndex = Math.floor(Math.random() * (currentIndex + 1));
 
       [numbers[currentIndex], numbers[randomIndex]] = [
         numbers[randomIndex],
@@ -28,7 +25,7 @@ export class CoreGameService {
     return numbers;
   }
 
-  private getNumbers(amountNumbers: number): number[] {
+  public getNumbers(amountNumbers: number): number[] {
     const numbers = [];
 
     for (let number = 1; number <= amountNumbers; number++) {

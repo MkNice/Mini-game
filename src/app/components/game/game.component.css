@@ -4,12 +4,14 @@
   background-color: #000;
 }
 
-.game-container {
+.game-container,
+.game {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 
 .game-elements {
   display: grid;
@@ -55,9 +57,7 @@
 }
 
 @media (max-height: 820px) {
-  .game-container {
-    padding: 25px 35px 35px 35px;
-  }
+
 
   .game-elements {
     max-width: 650px;
@@ -74,7 +74,6 @@
 
 @media (max-width: 800px) {
   .game-container {
-    padding: 80px 30px 30px 30px;
     max-height: 650px;
   }
 
@@ -93,7 +92,6 @@
 
 @media (max-width: 600px) {
   .game-container {
-    padding: 80px 15px 15px 15px;
     height: 650px;
   }
 
@@ -116,7 +114,6 @@
 
 @media (max-width: 500px) {
   .game-container {
-    padding: 5px 10px 10px 10px;
     height: 650px;
 
   }
@@ -129,7 +126,7 @@
   .active-element,
   .active-element-player,
   .active-element-computer {
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
   }
 }
